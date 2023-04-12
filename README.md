@@ -4,7 +4,7 @@ Uma série temporal é uma coleção de observações feitas sequencialmente ao 
 ## Modelo
 Inicialmente, o modelo proposto foi linear:
 ```math
-\y(n) = w^T x(n) + w_0
+y(n) = w^T x(n) + w_0
 ```
 Onde $\y(n)$ seria a saída esperada, $\w$ um vetor de coeficientes, $\x(n)$ uma coleção de amostras passadas e $\w_0$ a constante.
 ## Análise
