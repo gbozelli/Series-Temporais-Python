@@ -2,12 +2,12 @@
 ## Definições
 Uma série temporal é uma coleção de observações feitas sequencialmente ao longo do tempo. Numa série temporal, há a análise desse conjunto (advindo da variável de interesse). 
 ## Modelo
-O conjunto de dados oferecido foi a temperatura mínima registrada em Melbourne, na Austrália, todos os dias, durante 10 anos (1981 a 1990). A temperatura foi considerada como uma variável aleatória discreta no tempo, e é representada por $x$, sendo $x(n) = [x(n-1),....,x(n-K)]$ um vetor de entradas.
+O conjunto de dados oferecido foi a temperatura mínima registrada em Melbourne, na Austrália, todos os dias, durante 10 anos (1981 a 1990). A temperatura foi considerada como uma variável aleatória discreta no tempo, e é representada por $x$, sendo $x(n) = [x(n-1),....,x(n-K)]^T$ um vetor de entradas.
 Inicialmente, o modelo proposto foi linear:
 ```math
 y(n) = w^T x(n) + w_0
 ```
-Onde $y(n)$ seria a saída eperada, $\w$ um vetor de coeficientes, $x(n)$ uma coleção de amostras passadas e $w_0$ a constante. O Hiperperâmetro K será selecionado de acordo com a validação cruzada (do inglês, k-fold). 
+Onde $y(n)$ seria a saída eperada, $w$ um vetor de coeficientes, $x(n)$ uma coleção de amostras passadas e $w_0$ a constante. O Hiperperâmetro K será selecionado de acordo com a validação cruzada (do inglês, k-fold). 
 ## Análise
 ![Melbourne](https://user-images.githubusercontent.com/101020869/231739321-0ce4f724-8f5c-425a-8396-d0ed13994aa2.png)
 
