@@ -1,6 +1,5 @@
 import numpy as np
 import numpy.matlib as mt
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 def graphic(x,X,Y):
@@ -15,9 +14,7 @@ def Regression(X,Y,order):
     D, r = createMatrix(len(X),order+1), createMatrix(len(Y),0)
     D = valuesMatrixD(D,X)
     r = valuesD(r,Y)
-    print("Here")
     w = mt.multiply(mt.multiply(mt.invert(mt.multiply(D,mt.transpose(D))),mt.transpose(D)),r)
-    print(r)
     return w
 
 def createMatrix(m,n):
