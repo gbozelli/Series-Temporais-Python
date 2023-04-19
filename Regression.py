@@ -14,8 +14,12 @@ def Regression(X,Y,order):
     D, r = createMatrix(len(X),order+1), createMatrix(len(Y),0)
     D = valuesMatrixD(D,X)
     r = valuesD(r,Y)
-    w = mt.multiply(mt.multiply(mt.invert(mt.multiply(D,mt.transpose(D))),mt.transpose(D)),r)
-    return w
+    W = mt.multiply(mt.multiply(mt.invert(mt.multiply(D,mt.transpose(D))),mt.transpose(D)),r)
+    return W
+
+def DotRegression(X,Y):
+    W = mt.multiply(mt.multiply(mt.invert(mt.multiply(X,mt.transpose(X))),mt.transpose(X)),Y)
+    return W
 
 def createMatrix(m,n):
     Matrix = []

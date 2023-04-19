@@ -1,5 +1,5 @@
 import numpy as np
-from Regression import Regression
+from Regression import DotRegression
 from matplotlib import pyplot as plt
 import pandas as pd
 import random
@@ -18,9 +18,11 @@ filename = 'daily-minimum-temperatures.csv'
 names = ['Date','Temp']
 data = pd.read_csv(filename)
 data.index = pd.to_datetime(data.Date, format="%Y-%m-%d")
+n = np.random.randint(0,3649)
 K = 30
-Date = []
-for i in range(0,3650):
-    Date.append(i)
-
+X = []
+Y = data.Temp[n]
+for i in range (n-K,n):
+    X.append(data.Temp[i])
+W = DotRegression(X,Y)
 plotGraph(True)
