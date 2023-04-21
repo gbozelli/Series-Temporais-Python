@@ -18,6 +18,8 @@ def Regression(X,Y,order):
     return W
 
 def DotRegression(X,Y):
+    D = []
+    X = valuesMatrixD(D,X)
     W = mt.multiply(mt.multiply(mt.invert(mt.multiply(X,mt.transpose(X))),mt.transpose(X)),Y)
     return W
 
@@ -48,12 +50,10 @@ def valuesMatrix(Matrix,Sample):
 
 def valuesMatrixD(Matrix,Sample):
     m = len(Matrix)
-    n = len(Matrix[0])
     Size = len(Sample)
     for i in range(0,m):
-        for j in range(0,n):
-            for k in range(0,Size):
-                Matrix[i][j] = Sample[k]**(i*k)
+        for k in range(0,Size):
+            Matrix[i][j] = Sample[k]**(i*k)
     return Matrix
 
 def valuesVector(Matrix,Sample):
