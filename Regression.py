@@ -10,17 +10,14 @@ def graphic(x,X,Y):
     plt.show()
     return None
 
-def Regression(X,Y,order):
-    D, r = createMatrix(len(X),order+1), createMatrix(len(Y),0)
-    D = valuesMatrixD(D,X)
-    r = valuesD(r,Y)
-    W = mt.multiply(mt.multiply(mt.invert(mt.multiply(D,mt.transpose(D))),mt.transpose(D)),r)
-    return W
+def GradientRegression(X,Y):
+    Theta1 = 0
+    Theta2 = 0
 
-def DotRegression(X,Y):
-    D = []
-    X = valuesMatrixD(D,X)
-    W = mt.multiply(mt.multiply(mt.invert(mt.multiply(X,mt.transpose(X))),mt.transpose(X)),Y)
+def Regression(X,Y):
+    print(X)
+    print(Y)
+    W = np.linalg.solve(X,Y)
     return W
 
 def createMatrix(m,n):
