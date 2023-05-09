@@ -39,6 +39,7 @@ def fastTest(W,Set,bias,K):
     Error = sum(Y)/K
     return Error, biasc
 
+
 def Regression(X,Y):
     W = []
     W = np.linalg.solve(X,Y)
