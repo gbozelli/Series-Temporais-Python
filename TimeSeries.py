@@ -4,24 +4,17 @@ import pandas as pd
 
 def plotGraph(boll,W,Test):
     if boll == True:
-        n = np.random.randint(0,1000-K)
+        K = 46
+        n = 0
         X = createX(Test,n,n+K)
-        X1 = Test[n+K+1]
-        Y = Test[n+K+1]
         T = data.index[2550+n:2550+n+K]
-        T1 = data.index[2550+n+K+1]
-        y = np.dot(W,X)
         plt.plot(T,X,'bo')
-        plt.plot(T1,X1,'bo')
-        plt.plot(T1,y,'or')
-        if y>Y:
-            plt.vlines(T1, y, Y, color='black')
-        else:
-            plt.vlines(T1, Y,y, color='black')
+        plt.plot(T,X,'blue')
         plt.title("Temperatura mínima diária em Melbourne")
         plt.ylabel("Temperatura")
         plt.xlabel("Data")
         plt.grid(True)
+        plt.ylim(0,25)
         plt.show()
     return None
 
@@ -113,5 +106,5 @@ Set1 = data['Temp'].values.tolist()
 Train = Set1[0:2550]
 Test = Set1[2550:3650]
 K = 30
-W, bias = TrainModel(Set1,K,Test)
-constructGraph(W,bias,Test)
+W=1
+plotGraph(True,W,Test)
