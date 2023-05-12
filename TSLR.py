@@ -40,6 +40,42 @@ def TrainModel(T,X):
     plotGraph(Theta1, Theta0, T, Error)
     return Theta1, Theta0, Error
 
+def MultiVariableTrain(Set,K):
+    X, Y = Set[0:K], Set[K+1]
+    N = len(Set)-K
+    Theta = 0 
+    Theta0 = 0 
+    Error = 0
+    for i in range(N):
+        ThetaS, Theta0S, ErrorS = glm(X,Y,K)
+        Theta, Theta0, Error = (Theta+ThetaS)/2, (Theta0+Theta0S)/2, (Error+ErrorS)/2
+        X, Y = Set[i:K+i-1], Set[K+1+i]
+    return Theta, Theta0, Error
+
+def MultiVariableTest(Set,Theta, Theta0):
+    n = np.random.randint(0,900)
+    X = Set[n:40+n]
+    Y = []
+    for i in range (1,2*40):
+        y = np.dot(Theta,X) + Theta0
+        plt.plot(data.index[3+40-2+i],y,'or')
+        if y>X[-1]:
+            plt.vlines(data.index[3+40-2+i], y, X[-1], color='black')
+        else:
+            plt.vlines(data.index[3+40-2+i], X[-1],y, color='black')
+        X = Set[n+i:40+n+i]
+        Y.append(y)
+    T = data.index[n+3+40-1:n+3+3*40-2]
+    X1 = Set[n+3+40-1,n+3+3*40-2]
+    plt.plot(T,X1,'bo')
+    plt.plot(T,X1,'blue')
+    plt.plot(T,Y,'red')
+    plt.title("Temperatura mínima diária em Melbourne")
+    plt.ylabel("Temperatura")
+    plt.xlabel("Data")
+    plt.grid(True)
+    
+
 filename = 'daily-minimum-temperatures.csv'
 names = ['Date','Temp']
 data = pd.read_csv(filename)
@@ -47,9 +83,12 @@ Time = pd.to_datetime(data.Date, format="%Y-%m-%d")
 Set = data['Temp'].values.tolist()
 Train = Set[0:2550]
 Test = Set[2550:3650]
-R = 42
-X, T = createSet(Train, R,R+41)
-Theta, Error = glm(X,Y,10)
+#R = 42
+K = 10
+Theta, Theta0, Error = MultiVariableTrain(Train,K)
+MultiVariableTest(Test,Theta, Theta0)
+#X, T = createSet(Train, R,R+41)
+# Theta, Error = glm(X,Y,10)
 #Theta1, Theta0, Error = TrainModel(T,X)
 #print(Theta1, Theta0)
 plt.show()

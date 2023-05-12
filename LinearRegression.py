@@ -9,6 +9,19 @@ def GenerateData():
     Y = a*X+b+n 
     return a,b,X,Y   
 
+def BuildGraph(X,Y,a,b,Theta1, Theta0, Error):
+    x = X
+    print(Error)
+    print("y = ",a,"x +",b)
+    print("ypred = ",Theta1,"x +",Theta0)
+    plt.figure()
+    plt.plot(X,Y,'o',alpha=0.5)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.plot(x, a*x+b, 'blue')
+    plt.plot(x, Theta1*x+Theta0, 'red')
+    plt.show()
+
 def DescentGradient(X,Y):
     Theta1, Theta0 = 0,0
     k,lam = 20000, 0.001
@@ -20,25 +33,25 @@ def DescentGradient(X,Y):
         Error = 1/N*(sum((Y-YPred)**2))  
     return Theta1, Theta0, Error
 
-def BuildGraph(X,Y,a,b,Theta1, Theta0, Error):
-    x = X
-    plt.figure()
-    plt.plot(X,Y,'o',alpha=0.5)
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.plot(x, a*x+b, 'blue')
-    plt.plot(x, Theta1*x+Theta0, 'red')
-    plt.show()
-
 def GenericLinearModel(X,Y,K):
-    N = len(Y)
+    N = len(X)
     Theta = np.empty(K)
-    iterations = 0
-    lam = 0
+    Theta0 = 0
+    iterations = 2000
+    lam = 0.0001
     for i in range(iterations):
-        YPred = np.dot(Theta, X)
-        for k in range(K,1,-1):
-            Theta[k] += lam*(2/N)*sum((Y[i]-YPred)*X[k][i]**k)
-        Theta[0] = (Y[i]-YPred)
-        Error = 1/N*(sum((Y-YPred)**2))
-    return Theta, Error
+        YPred = np.matmul(Theta, X) + Theta0
+        for k in range(1,K+1):
+            Theta[k-1] += lam*(2/N)*sum((Y-YPred)*np.power(X,k))
+        Theta0 += lam*(2/N)*(Y-YPred)
+        Error = 1/N*(((Y-YPred)**2))
+    return Theta, Theta0, Error
+
+N=10
+Xtrain = np.arange(N+1)
+print(Xtrain)
+
+kaixo
+a,b,X,Y = GenerateData()
+Theta1, Theta0, Error = DescentGradient(X,Y)
+BuildGraph(X,Y,a,b,Theta1, Theta0, Error)
