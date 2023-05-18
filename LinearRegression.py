@@ -9,49 +9,54 @@ def GenerateData():
     Y = a*X+b+n 
     return a,b,X,Y   
 
-def BuildGraph(X,Y,a,b,Theta1, Theta0, Error):
+def BuildGraph(X,Y,T,Theta, Theta0):
     x = X
-    print(Error)
-    print("y = ",a,"x +",b)
-    print("ypred = ",Theta1,"x +",Theta0)
+    print(Theta)
     plt.figure()
-    plt.plot(X,Y,'o',alpha=0.5)
+    plt.plot(Y,T,'bo')
+    Ypred = np.dot(X,Theta) + Theta0
+    plt.plot(T,Ypred,'red')
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.plot(x, a*x+b, 'blue')
-    plt.plot(x, Theta1*x+Theta0, 'red')
     plt.show()
 
 def DescentGradient(X,Y):
     Theta1, Theta0 = 0,0
-    k,lam = 20000, 0.001
+    k,lam = 2000, 0.001
     N = len(X)
-    for i in range(k):
+    for i in range(10):
         YPred = Theta1*X + Theta0
         Theta1 += lam*(2/N)*sum((Y-YPred)*X)
         Theta0 += lam*(2/N)*sum((Y-YPred))
         Error = 1/N*(sum((Y-YPred)**2))  
+        print(Theta1)
     return Theta1, Theta0, Error
 
 def GenericLinearModel(X,Y,K):
-    N = len(X)
-    Theta = np.empty(K)
+    N = len(Y)
+    Theta = np.zeros((K,1))
     Theta0 = 0
-    iterations = 2000
-    lam = 0.0001
+    iterations = 5000
+    lam = 0.0000001
     for i in range(iterations):
-        YPred = np.matmul(Theta, X) + Theta0
+        YPred = np.dot(X,Theta) + Theta0
         for k in range(1,K+1):
-            Theta[k-1] += lam*(2/N)*sum((Y-YPred)*np.power(X,k))
+            D = lam*(2/N)*np.sum((X[k-1]*(Y-YPred)))
+            if(D>0.000000000000000000000000000000001):
+                Theta[k-1] += D
         Theta0 += lam*(2/N)*(Y-YPred)
-        Error = 1/N*(((Y-YPred)**2))
-    return Theta, Theta0, Error
+    return Theta, Theta0
 
-N=10
-Xtrain = np.arange(N+1)
-print(Xtrain)
-
-kaixo
-a,b,X,Y = GenerateData()
-Theta1, Theta0, Error = DescentGradient(X,Y)
-BuildGraph(X,Y,a,b,Theta1, Theta0, Error)
+def generateSet(N,K):
+    N = N - K
+    X, Y, S = [], [], []
+    for i in range(1,N+1):
+        S.append(K+i)
+        Y.append(S)
+        S = []
+    for i in range(1,N+1):
+        for j in range(K):
+            S.append(j+i)
+        X.append(S)
+        S = []
+    return X,Y

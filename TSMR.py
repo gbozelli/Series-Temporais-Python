@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
 from LinearRegression import DescentGradient as dg
-from LinearRegression import GenericLinearModel as glm
+import LinearRegression as aux
 
 def TestModel(Theta1,Theta0,X,T,Error):
     N = len(X)
@@ -40,21 +40,10 @@ def TrainModel(T,X):
     plotGraph(Theta1, Theta0, T, Error)
     return Theta1, Theta0, Error
 
-def MultiVariableTrain(Set,K):
-    X, Y = Set[0:K], Set[K+1]
-    N = len(Set)-K
-    Theta = 0 
-    Theta0 = 0 
-    Error = 0
-    for i in range(N):
-        ThetaS, Theta0S, ErrorS = glm(X,Y,K)
-        Theta, Theta0, Error = (Theta+ThetaS)/2, (Theta0+Theta0S)/2, (Error+ErrorS)/2
-        X, Y = Set[i:K+i-1], Set[K+1+i]
-    return Theta, Theta0, Error
 
 def MultiVariableTest(Set,Theta, Theta0):
     n = np.random.randint(0,900)
-    X = Set[n:40+n]
+    X = Set[n:100+n]
     Y = []
     for i in range (1,2*40):
         y = np.dot(Theta,X) + Theta0
@@ -83,12 +72,12 @@ Time = pd.to_datetime(data.Date, format="%Y-%m-%d")
 Set = data['Temp'].values.tolist()
 Train = Set[0:2550]
 Test = Set[2550:3650]
-#R = 42
-#K = 10
-#Theta, Theta0, Error = MultiVariableTrain(Train,K)
-#MultiVariableTest(Test,Theta, Theta0)
-#X, T = createSet(Train, R,R+41)
-# Theta, Error = glm(X,Y,10)
-#Theta1, Theta0, Error = TrainModel(T,X)
-#print(Theta1, Theta0)
-plt.show()
+X = Train
+N = len(X)
+K = 10
+X, Y = aux.generateSet(N,K)
+A,T = aux.generateSet(N,K)
+Theta, Theta0 = aux.GenericLinearModel(X,Y,K)
+Y = T
+N = N-K
+MultiVariableTest(X,Theta,Theta0)
