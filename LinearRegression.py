@@ -37,14 +37,14 @@ def GenericLinearModel(X,Y,K):
     Theta = np.zeros((K,1))
     Theta0 = 0
     iterations = 5000
-    lam = 0.0000001
+    lam = 0.0001
     for i in range(iterations):
         YPred = np.dot(X,Theta) + Theta0
         for k in range(1,K+1):
             D = lam*(2/N)*np.sum((X[k-1]*(Y-YPred)))
             if(D>0.000000000000000000000000000000001):
                 Theta[k-1] += D
-        Theta0 += lam*(2/N)*(Y-YPred)
+        Theta0 += lam*(2/N)*np.sum(Y-YPred)
     return Theta, Theta0
 
 def generateSet(N,K):
@@ -60,3 +60,6 @@ def generateSet(N,K):
         X.append(S)
         S = []
     return X,Y
+
+iterations = 5000
+lam = 0.00000001

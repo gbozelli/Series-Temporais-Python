@@ -34,6 +34,20 @@ def createSet(Set,Inf,Sup):
     X = Set[Inf:Sup]
     return X, T
 
+def generateSet(Set,N,K):
+    N = N - K
+    X, Y, S = [], [], []
+    for i in range(1,N+1):
+        S.append(Set[K+i])
+        Y.append(S)
+        S = []
+    for i in range(1,N+1):
+        for j in range(K):
+            S.append(Set[j+i])
+        X.append(S)
+        S = []
+    return X,Y
+
 def TrainModel(T,X):
     Theta1, Theta0, Error = dg(T,X)
     plotData(T,X)
@@ -42,27 +56,37 @@ def TrainModel(T,X):
 
 
 def MultiVariableTest(Set,Theta, Theta0):
-    n = np.random.randint(0,900)
-    X = Set[n:100+n]
-    Y = []
-    for i in range (1,2*40):
-        y = np.dot(Theta,X) + Theta0
-        plt.plot(data.index[3+40-2+i],y,'or')
+    Ys,Y1 = [], []
+    yp = 0
+    Ytest = []
+    X = Set[0:K]
+    K1 = 60
+    Ys = Set[0:K]
+    for i in range (K+1,K1+K+1):
+        y = np.dot(X,Theta) + Theta0
+        yp = np.dot(Ys,Theta) + Theta0
+        plt.plot(data.index[i],y,'or')
         if y>X[-1]:
-            plt.vlines(data.index[3+40-2+i], y, X[-1], color='black')
+            plt.vlines(data.index[i], y, X[-1], color='black')
         else:
-            plt.vlines(data.index[3+40-2+i], X[-1],y, color='black')
-        X = Set[n+i:40+n+i]
-        Y.append(y)
-    T = data.index[n+3+40-1:n+3+3*40-2]
-    X1 = Set[n+3+40-1,n+3+3*40-2]
+            plt.vlines(data.index[i], X[-1],y, color='black')
+        X = Set[i:K+i]
+        Y1.append(y)
+        Ys.append(y)
+        Ys = Ys[1:K+1]
+        print(yp)
+        Ytest.append(yp)
+    T = np.arange(K+1,K1+K+1)
+    X1 = Set[K+1:K1+K+1]
     plt.plot(T,X1,'bo')
     plt.plot(T,X1,'blue')
-    plt.plot(T,Y,'red')
+    plt.plot(T,Y1,'red')
+    plt.scatter(T,Ytest,c='#e377c2')
     plt.title("Temperatura mínima diária em Melbourne")
     plt.ylabel("Temperatura")
     plt.xlabel("Data")
     plt.grid(True)
+    plt.show()
     
 
 filename = 'daily-minimum-temperatures.csv'
@@ -72,12 +96,14 @@ Time = pd.to_datetime(data.Date, format="%Y-%m-%d")
 Set = data['Temp'].values.tolist()
 Train = Set[0:2550]
 Test = Set[2550:3650]
-X = Train
-N = len(X)
-K = 10
-X, Y = aux.generateSet(N,K)
-A,T = aux.generateSet(N,K)
+
+K = 2
+N = len(Train)-K
+X, Y = generateSet(Train,N,K)
+
 Theta, Theta0 = aux.GenericLinearModel(X,Y,K)
+A,T = aux.generateSet(N,K)
 Y = T
 N = N-K
-MultiVariableTest(X,Theta,Theta0)
+
+MultiVariableTest(Test,Theta,Theta0)
