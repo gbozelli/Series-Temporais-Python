@@ -16,27 +16,26 @@ def generateSet(Set,N,K):
         S = []
     return X,Y
 
-def GenericLinearModel(X,Y,K):
+def GenericLinearModel(X,Y,K,lam):
     N = len(Y)
     Theta = np.zeros((K,1))
     Theta0 = 0
-    iterations = 250
-    lam = 0.001
+    iterations = 500
     for i in range(iterations):
-        Ypredred = np.dot(X,Theta) + Theta0
+        Ypred = np.dot(X,Theta) + Theta0
         for k in range(1,K+1):
-            D = lam*(2/N)*np.sum((X[k-1]*(Y-Ypredred)))
+            D = lam*(2/N)*np.sum((X[k-1]*(Y-Ypred)))
             if(D>1e-30):
                 Theta[k-1] += D
-        Theta0 += lam*(2/N)*np.sum(Y-Ypredred)
+        Theta0 += lam*(2/N)*np.sum(Y-Ypred)
     return Theta, Theta0
   
-def rSquared(Y,Ypredred):
+def rSquared(Y,Ypred):
     meanY = np.sum(Y)/len(Y)
     sTotal, sResidual = 0, 0
     for i in range(len(Y)):
       sTotal += (Y[i]-meanY)**2
-      sResidual += (Y[i]-Ypredred[i])**2
+      sResidual += (Y[i]-Ypred[i])**2
     return 1-(sResidual/sTotal)
 
 def plotPrevision(Set,Theta,Theta0):
@@ -94,11 +93,11 @@ Set = data['Temp'].values.tolist()
 Train = Set[0:2550]
 Test = Set[2550:3650]
 
-K = 1
+K = 30
 N = len(Train)-K
 X, Y = generateSet(Train,N,K)
 
-Theta, Theta0 = GenericLinearModel(X,Y,K)
+Theta, Theta0 = GenericLinearModel(X,Y,K,0.000001)
 N = N-K
 
-plotPrevision(Test,Theta,Theta0)
+plotGraph(Test,Theta,Theta0)
